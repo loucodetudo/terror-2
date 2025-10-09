@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experiência de Terror</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- A dark overlay containing the background image. This uses the
+         generated abstract smoke graphic to set an unsettling mood. -->
+    <div id="overlay"></div>
+
+    <main id="content">
+      <h1>Você não devia estar aqui…</h1>
+      <p>
+        Se você está lendo isto, já é tarde demais. Clique no botão para ver o
+        que está escondido nas sombras.
+      </p>
+      <button id="startBtn">Entrar</button>
+
+      <!-- Container for dynamic psychological‑horror messages. It becomes
+           visible once the user clica o botão. -->
+      <div id="messageContainer" class="hidden">
+        <p id="message"></p>
+      </div>
+    </main>
+
+    <!-- An eerie beep sound stored in beep.wav. This plays whenever a new
+         message appears to enhance the feeling of unease. -->
+    <audio id="audio" preload="auto" src="beep.wav"></audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
