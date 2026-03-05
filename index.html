@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- A dark overlay containing the background image. This uses the
-         generated abstract smoke graphic to set an unsettling mood. -->
     <div id="overlay"></div>
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
+    <div id="flash" aria-hidden="true"></div>
+    <div id="whisper" class="hidden" aria-live="polite"></div>
 
     <main id="content">
       <h1>Você não devia estar aqui…</h1>
@@ -20,15 +22,11 @@
       </p>
       <button id="startBtn">Entrar</button>
 
-      <!-- Container for dynamic psychological‑horror messages. It becomes
-           visible once the user clica o botão. -->
       <div id="messageContainer" class="hidden">
         <p id="message"></p>
       </div>
     </main>
 
-    <!-- An eerie beep sound stored in beep.wav. This plays whenever a new
-         message appears to enhance the feeling of unease. -->
     <audio id="audio" preload="auto" src="beep.wav"></audio>
 
     <script src="script.js"></script>

@@ -1,16 +1,3 @@
-/*
- * script.js
- *
- * Este arquivo contém toda a lógica interativa para o site de terror
- * psicológico. Mensagens aleatórias são exibidas em intervalos para
- * criar tensão, acompanhadas por um som inquietante. Um efeito de
- * "glitch" altera levemente a posição do texto para tornar a
- * experiência desconfortável.
- */
-
-// Mensagens de terror psicológico. Sinta‑se livre para alterar ou
-// adicionar mais frases – o ideal é despertar ansiedade e criar
-// inquietação sem recorrer a violência explícita.
 const messages = [
   'Você sente uma presença atrás de você.',
   'O relógio parou. O tempo não avança.',
@@ -21,50 +8,105 @@ const messages = [
   'O silêncio é ensurdecedor.',
   'Você quer sair, mas as portas desapareceram.',
   'Um frio percorre sua espinha.',
-  'Tudo que você conhece não é real.'
+  'Tudo que você conhece não é real.',
+  'A luz piscou. Você piscou junto?',
+  'Alguma coisa respirou no seu ouvido.'
+];
+
+const whispers = [
+  'CORRA',
+  'FICA',
+  'OLHE',
+  'ATRÁS',
+  'NÃO DORME',
+  'ELE VOLTOU'
 ];
 
 const messageContainer = document.getElementById('messageContainer');
 const messageElement = document.getElementById('message');
 const startButton = document.getElementById('startBtn');
 const audio = document.getElementById('audio');
+const flash = document.getElementById('flash');
+const whisperElement = document.getElementById('whisper');
+const title = document.querySelector('h1');
 
-/**
- * Seleciona uma mensagem aleatória da lista e a mostra na tela. O som
- * inquietante é reproduzido a cada nova mensagem. Após exibir a
- * mensagem, agenda a próxima chamada para manter o ciclo.
- */
+let hasStarted = false;
+
+function typeWriter(text, speed = 38) {
+  messageElement.textContent = '';
+  let index = 0;
+
+  const typer = setInterval(() => {
+    messageElement.textContent += text.charAt(index);
+    index += 1;
+    if (index >= text.length) {
+      clearInterval(typer);
+    }
+  }, speed);
+}
+
+function randomChoice(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function triggerFlash() {
+  flash.classList.add('active');
+  setTimeout(() => flash.classList.remove('active'), 90);
+}
+
+function showWhisper() {
+  whisperElement.textContent = randomChoice(whispers);
+  whisperElement.classList.remove('hidden');
+  whisperElement.style.animation = 'none';
+  whisperElement.offsetHeight;
+  whisperElement.style.animation = '';
+  setTimeout(() => whisperElement.classList.add('hidden'), 1800);
+}
+
+function pulseTitle() {
+  title.classList.remove('pulse');
+  title.offsetHeight;
+  title.classList.add('pulse');
+}
+
 function showMessage() {
-  const index = Math.floor(Math.random() * messages.length);
-  const text = messages[index];
-  messageElement.textContent = text;
+  const text = randomChoice(messages);
   messageContainer.classList.remove('hidden');
-  // Reinicia o áudio caso já esteja tocando
+  typeWriter(text);
+
   if (audio) {
     audio.currentTime = 0;
-    audio.play().catch(() => {/* o usuário pode ter bloqueado auto‑play */});
+    audio.play().catch(() => {});
   }
-  // Agenda a próxima mensagem em um intervalo irregular (5‑8 segundos)
-  const nextDelay = 5000 + Math.random() * 3000;
+
+  pulseTitle();
+
+  if (Math.random() > 0.55) {
+    triggerFlash();
+  }
+
+  if (Math.random() > 0.6) {
+    showWhisper();
+  }
+
+  const nextDelay = 3200 + Math.random() * 2800;
   setTimeout(showMessage, nextDelay);
 }
 
-/**
- * Aplica um pequeno deslocamento ao texto em intervalos muito curtos para
- * simular um efeito de glitch. Este deslocamento aleatório dá a
- * sensação de instabilidade, sem dificultar a leitura.
- */
 function applyGlitch() {
-  const dx = (Math.random() - 0.5) * 4; // deslocamento horizontal
-  const dy = (Math.random() - 0.5) * 4; // deslocamento vertical
+  if (!hasStarted) {
+    return;
+  }
+
+  const dx = (Math.random() - 0.5) * 6;
+  const dy = (Math.random() - 0.5) * 6;
   messageElement.style.transform = `translate(${dx}px, ${dy}px)`;
 }
 
-// Chama applyGlitch aproximadamente 15 vezes por segundo
-setInterval(applyGlitch, 70);
+setInterval(applyGlitch, 60);
 
-// Inicializa a experiência quando o visitante clica no botão
 startButton.addEventListener('click', () => {
+  hasStarted = true;
   startButton.style.display = 'none';
   showMessage();
 });
